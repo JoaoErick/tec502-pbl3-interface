@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.Cursor?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane id="AnchorPane" prefHeight="600.0" prefWidth="900.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/15.0.1" fx:controller="controllers.InterfaceController">
+    <children>
+      <ImageView fitHeight="46.0" fitWidth="44.0" layoutX="35.0" layoutY="24.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../images/plane-solid.png" />
+         </image>
+      </ImageView>
+      <Label layoutX="84.0" layoutY="24.0" text="Companhia Aérea" textFill="#006a99">
+         <font>
+            <Font size="24.0" />
+         </font>
+      </Label>
+      <TableView fx:id="table" layoutX="130.0" layoutY="238.0" prefHeight="305.0" prefWidth="640.0" style="-fx-background-radius: 8;">
+         <columns>
+            <TableColumn fx:id="clmSeat" prefWidth="213.0" style="-fx-font-size: 14; -fx-alignment: CENTER; -fx-border-color: transparent #d3d3d3 transparent #d3d3d3;" text="Qtd. Acentos Disponíveis" />
+            <TableColumn fx:id="clmPrice" prefWidth="213.0" style="-fx-font-size: 14; -fx-alignment: CENTER; -fx-border-color: transparent #d3d3d3 transparent #d3d3d3;" text="Preço" />
+            <TableColumn fx:id="clmTime" prefWidth="213.0" style="-fx-font-size: 14; -fx-alignment: CENTER; -fx-border-color: transparent #d3d3d3 transparent #d3d3d3;" text="Tempo" />
+         </columns>
+      </TableView>
+      <Label layoutX="35.0" layoutY="108.0" text="Origem" textFill="#006a99">
+         <font>
+            <Font size="18.0" />
+         </font>
+      </Label>
+      <ImageView fitHeight="27.0" fitWidth="36.0" layoutX="104.0" layoutY="108.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../images/plane-departure-solid.png" />
+         </image>
+      </ImageView>
+      <ComboBox fx:id="cBoxOrigin" layoutX="35.0" layoutY="143.0" prefHeight="32.0" prefWidth="180.0" />
+      <Label layoutX="270.0" layoutY="108.0" text="Destino" textFill="#006a99">
+         <font>
+            <Font size="18.0" />
+         </font>
+      </Label>
+      <ImageView fitHeight="27.0" fitWidth="36.0" layoutX="339.0" layoutY="108.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../images/plane-arrival-solid.png" />
+         </image>
+      </ImageView>
+      <ComboBox fx:id="cBoxDestination" layoutX="270.0" layoutY="143.0" prefHeight="32.0" prefWidth="180.0" />
+      <Button fx:id="btnSearch" layoutX="464.0" layoutY="143.0" mnemonicParsing="false" prefHeight="32.0" prefWidth="34.0" style="-fx-background-color: transparent;">
+         <cursor>
+            <Cursor fx:constant="HAND" />
+         </cursor>
+         <padding>
+            <Insets right="1.0" />
+         </padding>
+         <graphic>
+            <ImageView fx:id="btnSearchIcon" fitHeight="32.0" fitWidth="40.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../images/search.png" />
+               </image>
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor>
+            </ImageView>
+         </graphic>
+      </Button>
+    </children>
+</AnchorPane>

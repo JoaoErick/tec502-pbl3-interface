@@ -1,0 +1,177 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.Cursor?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Region?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.shape.Line?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+
+<AnchorPane id="AnchorPane" prefHeight="600.0" prefWidth="900.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/15.0.1" fx:controller="controllers.MoreInfoController">
+   <children>
+      <Button fx:id="btnBack" layoutX="32.0" layoutY="104.0" mnemonicParsing="false" prefHeight="27.0" prefWidth="95.0" style="-fx-background-color: #00a8f3; -fx-background-radius: 8;" textFill="WHITE">
+         <font>
+            <Font name="System Bold" size="14.0" />
+         </font>
+         <cursor>
+            <Cursor fx:constant="HAND" />
+         </cursor>
+         <graphic>
+            <ImageView fx:id="btnArrowBack" fitHeight="19.0" fitWidth="31.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../images/arrow-left-solid.png" />
+               </image>
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor>
+            </ImageView>
+         </graphic>
+      </Button>
+      <ImageView fitHeight="46.0" fitWidth="44.0" layoutX="35.0" layoutY="24.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../images/plane-solid.png" />
+         </image>
+      </ImageView>
+      <Label layoutX="88.0" layoutY="25.0" text="Informações Sobre o Voo" textFill="#006a99">
+         <font>
+            <Font size="24.0" />
+         </font>
+      </Label>
+      <VBox layoutX="34.0" layoutY="162.0" prefHeight="361.0" prefWidth="901.0">
+         <children>
+            <VBox prefHeight="202.0" prefWidth="832.0">
+               <children>
+                  <HBox>
+                     <children>
+                        <Text fill="#006a99" strokeType="OUTSIDE" strokeWidth="0.0" text="Trajeto:">
+                           <font>
+                              <Font name="System Bold" size="16.0" />
+                           </font>
+                           <HBox.margin>
+                              <Insets left="5.0" />
+                           </HBox.margin>
+                        </Text>
+                        <Region prefHeight="22.0" prefWidth="815.0" />
+                     </children>
+                  </HBox>
+                  <HBox prefHeight="180.0" prefWidth="900.0" spacing="10.0">
+                     <children>
+                        <Label fx:id="lblRoute" prefHeight="180.0" prefWidth="882.0" wrapText="true">
+                           <font>
+                              <Font name="System Bold" size="16.0" />
+                           </font>
+                        </Label>
+                     </children>
+                  </HBox>
+               </children>
+            </VBox>
+            <Line endX="800.0" startX="-100.0" stroke="LIGHTGRAY" />
+            <VBox prefHeight="51.0" prefWidth="832.0">
+               <children>
+                  <HBox>
+                     <children>
+                        <Text fill="#006a99" strokeType="OUTSIDE" strokeWidth="0.0" text="Quantidade de Acentos Disponíveis:">
+                           <font>
+                              <Font name="System Bold" size="16.0" />
+                           </font>
+                           <HBox.margin>
+                              <Insets left="5.0" />
+                           </HBox.margin>
+                        </Text>
+                        <Region prefHeight="22.0" prefWidth="815.0" />
+                     </children>
+                  </HBox>
+                  <HBox prefHeight="34.0" prefWidth="900.0" spacing="10.0">
+                     <children>
+                        <Label fx:id="lblSeat" prefHeight="25.0" prefWidth="882.0">
+                           <font>
+                              <Font name="System Bold" size="16.0" />
+                           </font>
+                           <HBox.margin>
+                              <Insets left="5.0" right="5.0" />
+                           </HBox.margin>
+                        </Label>
+                     </children>
+                  </HBox>
+               </children>
+            </VBox>
+            <Line endX="800.0" startX="-100.0" stroke="LIGHTGRAY" />
+            <VBox prefHeight="51.0" prefWidth="832.0">
+               <children>
+                  <HBox>
+                     <children>
+                        <Text fill="#006a99" strokeType="OUTSIDE" strokeWidth="0.0" text="Tempo Total da Viagem:">
+                           <font>
+                              <Font name="System Bold" size="16.0" />
+                           </font>
+                           <HBox.margin>
+                              <Insets left="5.0" />
+                           </HBox.margin>
+                        </Text>
+                        <Region prefHeight="22.0" prefWidth="815.0" />
+                     </children>
+                  </HBox>
+                  <HBox prefHeight="34.0" prefWidth="900.0" spacing="10.0">
+                     <children>
+                        <Label fx:id="lblTimeTravel" prefHeight="25.0" prefWidth="882.0">
+                           <font>
+                              <Font name="System Bold" size="16.0" />
+                           </font>
+                           <HBox.margin>
+                              <Insets left="5.0" right="5.0" />
+                           </HBox.margin>
+                        </Label>
+                     </children>
+                  </HBox>
+               </children>
+            </VBox>
+            <Line endX="800.0" startX="-100.0" stroke="LIGHTGRAY" />
+            <VBox prefHeight="51.0" prefWidth="832.0">
+               <children>
+                  <HBox>
+                     <children>
+                        <Text fill="#006a99" strokeType="OUTSIDE" strokeWidth="0.0" text="Preço Total:">
+                           <font>
+                              <Font name="System Bold" size="16.0" />
+                           </font>
+                           <HBox.margin>
+                              <Insets left="5.0" />
+                           </HBox.margin>
+                        </Text>
+                        <Region prefHeight="22.0" prefWidth="815.0" />
+                     </children>
+                  </HBox>
+                  <HBox prefHeight="34.0" prefWidth="900.0" spacing="10.0">
+                     <children>
+                        <Label fx:id="lblTotalPrice" prefHeight="25.0" prefWidth="882.0">
+                           <font>
+                              <Font name="System Bold" size="16.0" />
+                           </font>
+                           <HBox.margin>
+                              <Insets left="5.0" right="5.0" />
+                           </HBox.margin>
+                        </Label>
+                     </children>
+                  </HBox>
+               </children>
+            </VBox>
+         </children>
+      </VBox>
+      <Button fx:id="btnBuy" layoutX="360.0" layoutY="540.0" mnemonicParsing="false" prefHeight="39.0" prefWidth="180.0" style="-fx-background-color: #0ed145; -fx-background-radius: 8;" text="Comprar" textFill="WHITE">
+         <font>
+            <Font name="System Bold" size="18.0" />
+         </font>
+         <cursor>
+            <Cursor fx:constant="HAND" />
+         </cursor>
+      </Button>
+   </children>
+</AnchorPane>
