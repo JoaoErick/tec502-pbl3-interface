@@ -44,13 +44,10 @@ public class InterfaceController extends StageController implements Initializabl
     private TableView<Travel> table;
 
     @FXML
-    private TableColumn<Travel, String> clmSeat;
+    private TableColumn<Travel, Integer> clmParts;
 
     @FXML
-    private TableColumn<Travel, String> clmPrice;
-
-    @FXML
-    private TableColumn<Travel, String> clmTime;
+    private TableColumn<Travel, String> clmRoutes;
 
     @FXML
     private ComboBox<String> cBoxOrigin;
@@ -75,13 +72,11 @@ public class InterfaceController extends StageController implements Initializabl
     
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        //Inicializa a tabela de voos.
-        initTable();
-        
         //Preenche as cidades nos componentes de seleção.
         fillComboBox();
         
         cBoxDestination.setDisable(true);
+        btnSearch.setDisable(true);
         
         table.getSelectionModel().selectedItemProperty().addListener(new ChangeListener() {
             @Override
@@ -126,6 +121,7 @@ public class InterfaceController extends StageController implements Initializabl
         cBoxDestination.valueProperty().addListener(new ChangeListener() {
             @Override
             public void changed(ObservableValue observable, Object oldValue, Object newValue) {
+                btnSearch.setDisable(false);
                 removeOption(cBoxOrigin, oldValue, newValue);
             }
         
@@ -137,9 +133,10 @@ public class InterfaceController extends StageController implements Initializabl
      * Inicializa a tabela de voos com dados presentes na lista de voos.
      */
     private void initTable() {
-        clmSeat.setCellValueFactory(new PropertyValueFactory("totalSeat"));
-        clmPrice.setCellValueFactory(new PropertyValueFactory("totalPrice"));
-        clmTime.setCellValueFactory(new PropertyValueFactory("totalTime"));
+        clmParts.setCellValueFactory(new PropertyValueFactory("totalParts"));
+        clmRoutes.setCellValueFactory(new PropertyValueFactory("cities"));
+        
+        table.setItems(listToObservableList());
     }
     
     /**
@@ -213,7 +210,16 @@ public class InterfaceController extends StageController implements Initializabl
      */
     private void search(){
         requestTravels();
-        table.setItems(listToObservableList());
+        for(Travel travel : travels){
+            travel.format();
+        }
+        travels.sort(new Comparator<Travel>() {
+            @Override
+            public int compare(Travel travel1, Travel travel2) {
+                return new Integer(travel1.getTotalParts()).compareTo(new Integer(travel2.getTotalParts()));
+            }
+        });
+        initTable();
     }
     
     /**
@@ -241,10 +247,10 @@ public class InterfaceController extends StageController implements Initializabl
 
             travels = (List<Travel>) input.readObject();
             
-            System.out.println(this.travels.get(1).getRoute().get(0).size());
-            System.out.println(this.travels.get(1).getRoute().get(0).get(0).getFirstCity().getCityName());
-            
-            System.out.println(this.travels.get(1).getRoute().getLast().get(0).getSecondCity().getCityName());
+//            System.out.println(this.travels.get(1).getRoute().get(0).size());
+//            System.out.println(this.travels.get(1).getRoute().get(0).get(0).getFirstCity().getCityName());
+//            
+//            System.out.println(this.travels.get(1).getRoute().getLast().get(0).getSecondCity().getCityName());
 
             client.close();
         } catch (IOException ex) {
