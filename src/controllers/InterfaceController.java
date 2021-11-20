@@ -7,6 +7,7 @@ import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
@@ -28,9 +29,11 @@ import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 import main.Interface;
 import main.MoreInfo;
+import models.Reader;
 import models.Travel;
 
 /**
+ * Classe controladora da página inicial da interface da companhia aérea.
  *
  * @author Allan Capistrano
  * @author João Erick Barbosa
@@ -67,13 +70,18 @@ public class InterfaceController extends StageController implements Initializabl
     
     private Travel selected;
     
-    private static final String IP_ADDRESS = "localhost";
-    private static final int PORT = 12250;
+    private static final String IP_ADDRESS = "26.40.234.250";
+    private static final int PORT = 12240;
     
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         //Inicializa a tabela de voos.
         initTable();
+        
+        //Preenche as cidades nos componentes de seleção.
+        fillComboBox();
+        
+        cBoxDestination.setDisable(true);
         
         table.getSelectionModel().selectedItemProperty().addListener(new ChangeListener() {
             @Override
@@ -106,6 +114,23 @@ public class InterfaceController extends StageController implements Initializabl
             search();
         });
         
+        cBoxOrigin.valueProperty().addListener(new ChangeListener() {
+            @Override
+            public void changed(ObservableValue observable, Object oldValue, Object newValue) {
+                cBoxDestination.setDisable(false);
+                removeOption(cBoxDestination, oldValue, newValue);
+            }
+        
+        });
+        
+        cBoxDestination.valueProperty().addListener(new ChangeListener() {
+            @Override
+            public void changed(ObservableValue observable, Object oldValue, Object newValue) {
+                removeOption(cBoxOrigin, oldValue, newValue);
+            }
+        
+        });
+          
     }  
     
     /**
@@ -115,6 +140,40 @@ public class InterfaceController extends StageController implements Initializabl
         clmSeat.setCellValueFactory(new PropertyValueFactory("totalSeat"));
         clmPrice.setCellValueFactory(new PropertyValueFactory("totalPrice"));
         clmTime.setCellValueFactory(new PropertyValueFactory("totalTime"));
+    }
+    
+    /**
+     * Preenche as cidades nos componentes de seleção a partir da leitura do 
+     * arquivo de cidades.
+     */
+    private void fillComboBox(){
+        Reader reader = new Reader();
+        
+        for(String city: reader.readCities()){
+            cBoxOrigin.getItems().add(city);
+            cBoxDestination.getItems().add(city);
+        }
+    }
+    
+    /**
+     * Remove a opção de outro componente de seleção que foi selecionada no 
+     * componente de seleção especificado.
+     * 
+     * @param option ComboBox<String> - Componente de seleção.
+     * @param oldValue Object - Antiga opção selecionada.
+     * @param newValue Object - Nova opção selecionada.
+     */
+    private void removeOption(ComboBox<String> option, Object oldValue, Object newValue){
+        option.getItems().remove((String) newValue);
+        if(oldValue != null)
+            option.getItems().add((String) oldValue);
+
+        option.getItems().sort(new Comparator<String>() {
+            @Override
+            public int compare(String city1, String city2) {
+                return city1.compareTo(city2);
+            }
+        });
     }
     
     /**
@@ -149,6 +208,9 @@ public class InterfaceController extends StageController implements Initializabl
         return FXCollections.observableArrayList(travels);
     }
     
+    /**
+     * Requisitas as possíveis rotas de voo aos servidores e atualiza a tabela.
+     */
     private void search(){
         requestTravels();
         table.setItems(listToObservableList());
@@ -169,11 +231,20 @@ public class InterfaceController extends StageController implements Initializabl
             ObjectOutputStream output = new ObjectOutputStream(client.getOutputStream());
             output.flush();
             output.writeObject(new String("GET /routes"));
+            
+            ObjectOutputStream output2 = new ObjectOutputStream(client.getOutputStream());
+            output2.flush();
+            output2.writeObject(cBoxOrigin.getValue() + "," + cBoxDestination.getValue());
 
             //Recebendo a resposta do servidor.
             ObjectInputStream input = new ObjectInputStream(client.getInputStream());
 
             travels = (List<Travel>) input.readObject();
+            
+            System.out.println(this.travels.get(1).getRoute().get(0).size());
+            System.out.println(this.travels.get(1).getRoute().get(0).get(0).getFirstCity().getCityName());
+            
+            System.out.println(this.travels.get(1).getRoute().getLast().get(0).getSecondCity().getCityName());
 
             client.close();
         } catch (IOException ex) {
