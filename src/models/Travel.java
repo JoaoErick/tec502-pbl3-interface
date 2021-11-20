@@ -5,7 +5,8 @@ import java.util.LinkedList;
 import java.util.List;
 
 /**
- *
+ * Trajeto entre a cidade de origem e a cidade de destino.
+ * 
  * @author Allan Capistrano
  * @author João Erick Barbosa
  */
