@@ -67,7 +67,7 @@ public class InterfaceController extends StageController implements Initializabl
     
     private Travel selected;
     
-    private static final String IP_ADDRESS = "26.40.234.250";
+    private static final String IP_ADDRESS = "localhost";
     private static final int PORT = 12240;
     
     @Override
