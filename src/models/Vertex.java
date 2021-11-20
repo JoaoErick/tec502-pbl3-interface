@@ -1,5 +1,6 @@
 package models;
 
+import java.io.Serializable;
 import java.util.Objects;
 
 /**
@@ -8,15 +9,18 @@ import java.util.Objects;
  * @author Allan Capistrano
  * @author João Erick Barbosa
  */
-public class Vertex {
+public class Vertex implements Serializable{
 
     private String cityName;
 
     /**
      * Método construtor.
      * 
+     * @param cityName String - Nome da cidade.
      */
-    public Vertex() {}
+    public Vertex(String cityName) {
+        this.cityName = cityName;
+    }
 
     /**
      * Compara se dois vértices são iguais pelo nome da cidade.

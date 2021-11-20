@@ -1,6 +1,8 @@
 package models;
 
+import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
 /**
@@ -8,14 +10,14 @@ import java.util.List;
  * @author Allan Capistrano
  * @author João Erick Barbosa
  */
-public class Travel {
-    private List<List<Edge>> route;
+public class Travel implements Serializable {
+    private LinkedList<List<Edge>> route;
 
     public Travel() {
-        this.route = new ArrayList<>();
+        this.route = new LinkedList<>();
     }
 
-    public List<List<Edge>> getRoute() {
+    public LinkedList<List<Edge>> getRoute() {
         return route;
     }
     
