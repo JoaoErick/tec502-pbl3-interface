@@ -211,7 +211,7 @@ public class InterfaceController extends StageController implements Initializabl
     private void search(){
         requestTravels();
         for(Travel travel : travels){
-            travel.format();
+            travel.setAttributes();
         }
         travels.sort(new Comparator<Travel>() {
             @Override
