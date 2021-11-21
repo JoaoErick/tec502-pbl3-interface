@@ -74,12 +74,16 @@ public class Travel implements Serializable {
      * 
      * @param indexes List<Integer> - Lista de trechos específicos.
      */
-    public void calculate(List<Integer> indexes){
+    public void calculate(List<String> indexes){
         this.totalCompanyTariff = 0;
         this.totalTime = 0;
         for (int j = 0; j < this.route.size(); j++) {
-            this.totalTime += this.route.get(j).get(indexes.get(j)).getTimeTravel();
-            this.totalCompanyTariff += this.route.get(j).get(indexes.get(j)).getCompanyTariff();
+            for (int i = 0; i < this.route.get(j).size(); i++) {
+                if(this.route.get(j).get(i).getCompanyName().equals(indexes.get(j))){
+                    this.totalTime += this.route.get(j).get(i).getTimeTravel();
+                    this.totalCompanyTariff += this.route.get(j).get(i).getCompanyTariff();
+                }
+            }
         }
         
         this.totalPrice = (float) (BASE_VALUE / this.totalTime) + this.totalCompanyTariff;
