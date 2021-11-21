@@ -12,14 +12,9 @@ import utils.RandomUtil;
  */
 public class Edge implements Serializable{
 
-    /*-------------------------- Constante -----------------------------------*/
-    private static final float BASE_VALUE = 3200;
-    /*------------------------------------------------------------------------*/
-
     private Vertex firstCity;
     private Vertex secondCity;
     private double timeTravel;
-    private float price;
     private String companyName;
     private float companyTariff;
     private int amountSeat;
@@ -46,9 +41,8 @@ public class Edge implements Serializable{
         this.companyName = companyName;
 
         this.companyTariff
-                = RandomUtil.generateFloat((float) 1.05, (float) 1.21);
+                = RandomUtil.generateFloat((float) 5.05, (float) 10.21);
 
-        this.price = (float) (BASE_VALUE / this.timeTravel) * companyTariff;
     }
 
     /**
@@ -92,10 +86,6 @@ public class Edge implements Serializable{
 
     public double getTimeTravel() {
         return timeTravel;
-    }
-
-    public float getPrice() {
-        return price;
     }
 
     public String getCompanyName() {
