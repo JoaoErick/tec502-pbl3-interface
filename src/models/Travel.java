@@ -11,23 +11,37 @@ import java.util.List;
  * @author João Erick Barbosa
  */
 public class Travel implements Serializable {
+    /*-------------------------- Constante -----------------------------------*/
+    private static final float BASE_VALUE = 3200;
+    /*------------------------------------------------------------------------*/
+    
     private LinkedList<List<Edge>> route;
     private int totalParts;
     private String cities;
+    private float totalPrice;
+    private double totalTime;
+    private float totalCompanyTariff;
 
+    /**
+     * Método construtor.
+     */
     public Travel() {
         this.route = new LinkedList<>();
     }
-
-    public LinkedList<List<Edge>> getRoute() {
-        return route;
-    }
     
-    public void format(){
-        this.totalParts = this.route.size();
+    /**
+     * Inicializa atributos: totalParts, cities, totalCompanyTariff, totalPrice 
+     * e totalTime.
+     */
+    public void setAttributes(){
+        this.totalParts = this.route.size()-1;
         formatCities();
+        calculate();
     }
     
+    /**
+     * Formata o atributo cities para exibição.
+     */
     private void formatCities(){
         this.cities = "";
         for (int j = 0; j < this.route.size(); j++) {
@@ -37,6 +51,43 @@ public class Travel implements Serializable {
             }
         }
     }
+    
+    /**
+     * Calcula o valor total da tarifa da viagem, tempo total de voo e o 
+     * preço total.
+     */
+    private void calculate(){
+        this.totalCompanyTariff = 0;
+        this.totalTime = 0;
+        
+        for (int j = 0; j < this.route.size(); j++) {
+            this.totalTime += this.route.get(j).get(0).getTimeTravel();
+            this.totalCompanyTariff += this.route.get(j).get(0).getCompanyTariff();
+        }
+        
+        this.totalPrice = (float) (BASE_VALUE / this.totalTime) + this.totalCompanyTariff;
+    }
+    
+    /**
+     * Calcula o valor total da tarifa da viagem, tempo total de voo e o 
+     * preço total através de opções de trechos específicas.
+     * 
+     * @param indexes List<Integer> - Lista de trechos específicos.
+     */
+    public void calculate(List<Integer> indexes){
+        this.totalCompanyTariff = 0;
+        this.totalTime = 0;
+        for (int j = 0; j < this.route.size(); j++) {
+            this.totalTime += this.route.get(j).get(indexes.get(j)).getTimeTravel();
+            this.totalCompanyTariff += this.route.get(j).get(indexes.get(j)).getCompanyTariff();
+        }
+        
+        this.totalPrice = (float) (BASE_VALUE / this.totalTime) + this.totalCompanyTariff;
+    }
+    
+    public LinkedList<List<Edge>> getRoute() {
+        return route;
+    }
 
     public int getTotalParts() {
         return totalParts;
@@ -45,7 +96,13 @@ public class Travel implements Serializable {
     public String getCities() {
         return cities;
     }
-    
-    
+
+    public float getTotalPrice() {
+        return totalPrice;
+    }
+
+    public double getTotalTime() {
+        return totalTime;
+    }
     
 }
