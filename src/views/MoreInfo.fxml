@@ -14,8 +14,7 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-
-<AnchorPane id="AnchorPane" prefHeight="600.0" prefWidth="900.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/15.0.1" fx:controller="controllers.MoreInfoController">
+<AnchorPane id="AnchorPane" prefHeight="600.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.MoreInfoController">
    <children>
       <Button fx:id="btnBack" layoutX="32.0" layoutY="104.0" mnemonicParsing="false" prefHeight="27.0" prefWidth="95.0" style="-fx-background-color: #00a8f3; -fx-background-radius: 8;" textFill="WHITE">
          <font>
@@ -78,7 +77,7 @@
                <children>
                   <HBox>
                      <children>
-                        <Text fill="#006a99" strokeType="OUTSIDE" strokeWidth="0.0" text="Quantidade de Acentos Disponíveis:">
+                        <Text fill="#006a99" strokeType="OUTSIDE" strokeWidth="0.0" text="Escalas:">
                            <font>
                               <Font name="System Bold" size="16.0" />
                            </font>
@@ -91,7 +90,7 @@
                   </HBox>
                   <HBox prefHeight="34.0" prefWidth="900.0" spacing="10.0">
                      <children>
-                        <Label fx:id="lblSeat" prefHeight="25.0" prefWidth="882.0">
+                        <Label fx:id="lblParts" prefHeight="25.0" prefWidth="882.0">
                            <font>
                               <Font name="System Bold" size="16.0" />
                            </font>
