@@ -247,11 +247,6 @@ public class InterfaceController extends StageController implements Initializabl
 
             travels = (List<Travel>) input.readObject();
             
-//            System.out.println(this.travels.get(1).getRoute().get(0).size());
-//            System.out.println(this.travels.get(1).getRoute().get(0).get(0).getFirstCity().getCityName());
-//            
-//            System.out.println(this.travels.get(1).getRoute().getLast().get(0).getSecondCity().getCityName());
-
             client.close();
         } catch (IOException ex) {
             Logger.getLogger(InterfaceController.class.getName()).log(Level.SEVERE, null, ex);
