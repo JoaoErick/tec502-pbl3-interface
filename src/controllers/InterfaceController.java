@@ -9,9 +9,6 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.ResourceBundle;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
@@ -35,7 +32,7 @@ import models.Reader;
 import models.Travel;
 
 /**
- * Classe controladora da página inicial da interface da companhia aérea.
+ * Controlador da tela inicial da interface da companhia aérea.
  *
  * @author Allan Capistrano
  * @author João Erick Barbosa
@@ -96,7 +93,9 @@ public class InterfaceController extends StageController implements Initializabl
                     try {
                         alt.start(new Stage());
                     } catch (Exception ex) {
-                        Logger.getLogger(InterfaceController.class.getName()).log(Level.SEVERE, null, ex);
+                        System.err.println("Não foi possível exibir mais "
+                                + "informações sobre o trajeto selecionado.");
+                        System.out.println(ex);
                     }
                 } else {
                     Alert alert = new Alert(Alert.AlertType.WARNING);
@@ -168,7 +167,11 @@ public class InterfaceController extends StageController implements Initializabl
      * @param oldValue Object - Antiga opção selecionada.
      * @param newValue Object - Nova opção selecionada.
      */
-    private void removeOption(ComboBox<String> option, Object oldValue, Object newValue) {
+    private void removeOption(
+            ComboBox<String> option,
+            Object oldValue,
+            Object newValue
+    ) {
         option.getItems().remove((String) newValue);
         if (oldValue != null) {
             option.getItems().add((String) oldValue);
@@ -248,22 +251,29 @@ public class InterfaceController extends StageController implements Initializabl
             travels.removeAll(travels);
 
             //Enviando a requisição para o servidor.
-            ObjectOutputStream output = new ObjectOutputStream(client.getOutputStream());
+            ObjectOutputStream output
+                    = new ObjectOutputStream(client.getOutputStream());
             output.flush();
             output.writeObject(new String("GET /routes"));
 
-            ObjectOutputStream output2 = new ObjectOutputStream(client.getOutputStream());
+            ObjectOutputStream output2
+                    = new ObjectOutputStream(client.getOutputStream());
             output2.flush();
-            output2.writeObject(cBoxOrigin.getValue() + "," + cBoxDestination.getValue());
+            output2.writeObject(
+                    cBoxOrigin.getValue() + "," + cBoxDestination.getValue()
+            );
 
             //Recebendo a resposta do servidor.
-            ObjectInputStream input = new ObjectInputStream(client.getInputStream());
+            ObjectInputStream input
+                    = new ObjectInputStream(client.getInputStream());
 
             travels = (List<Travel>) input.readObject();
 
             client.close();
-        } catch (IOException ex) {
-            Logger.getLogger(InterfaceController.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (IOException ioe) {
+            System.err.println("Erro ao requisitar a lista de possíveis "
+                    + "trajetos para o servidor.");
+            System.out.println(ioe);
             client = null;
         } catch (ClassNotFoundException cnfe) {
             System.err.println("Classe String não foi encontrada.");
