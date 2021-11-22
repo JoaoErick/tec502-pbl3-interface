@@ -81,7 +81,6 @@ public class MoreInfoController extends StageController implements Initializable
                         comboBoxes.add(Integer.parseInt(id), (String) newValue);
                         travel.calculate(comboBoxes);
                         fillFields();
-                        System.out.println(Integer.parseInt(id));
                         
                     }
                 });
@@ -121,7 +120,6 @@ public class MoreInfoController extends StageController implements Initializable
 
         route.addAll(travel.getRoute());
         double posY = txtRouteTitle.getLayoutY();
-        System.out.println(txtRouteTitle.getLayoutY());
 
         for (int j = 0; j < route.size(); j++) {
             Label lblPart = new Label(
