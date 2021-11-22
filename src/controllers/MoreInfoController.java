@@ -2,7 +2,6 @@ package controllers;
 
 import java.net.URL;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.ResourceBundle;
@@ -28,7 +27,7 @@ import models.Edge;
 import models.Travel;
 
 /**
- *
+ * Controlador da tela de mais informações.
  *
  * @author Allan Capistrano
  * @author João Erick Barbosa
@@ -60,7 +59,7 @@ public class MoreInfoController extends StageController implements Initializable
     private Text txtRouteTitle;
 
     private static Travel travel;
-    
+
     private List<String> comboBoxes = new ArrayList<>();
 
     /**
@@ -81,7 +80,7 @@ public class MoreInfoController extends StageController implements Initializable
                         comboBoxes.add(Integer.parseInt(id), (String) newValue);
                         travel.calculate(comboBoxes);
                         fillFields();
-                        
+
                     }
                 });
             }
@@ -132,6 +131,7 @@ public class MoreInfoController extends StageController implements Initializable
             lblPart.setLayoutY(posY);
 
             String airlines[] = new String[route.get(j).size()];
+
             for (int i = 0; i < route.get(j).size(); i++) {
                 airlines[i] = route.get(j).get(i).getCompanyName();
             }
@@ -143,13 +143,13 @@ public class MoreInfoController extends StageController implements Initializable
             combo_box.setLayoutX(lblPart.getLayoutX() + 200);
             combo_box.setLayoutY(lblPart.getLayoutY());
             combo_box.setValue(airlines[0]);
-            if(j < 10){
+
+            if (j < 10) {
                 combo_box.setId("cb0" + j);
-            } else{
+            } else {
                 combo_box.setId("cb" + j);
             }
-            
-            
+
             comboBoxes.add((String) combo_box.getValue());
 
             anchorPane.getChildren().addAll(lblPart, combo_box);

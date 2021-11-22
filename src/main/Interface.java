@@ -14,21 +14,21 @@ import javafx.stage.Stage;
  * @author João Erick Barbosa
  */
 public class Interface extends Application {
-    
+
     private static Stage stage;
-    
+
     @Override
     public void start(Stage stage) throws Exception {
         Parent root = FXMLLoader.load(getClass().getResource("/views/Interface.fxml"));
-        
+
         Scene scene = new Scene(root);
-        
+
         stage.setScene(scene);
         stage.setTitle("Companhia Aérea");
         stage.setResizable(false);
         stage.show();
         setStage(stage);
-        
+
         Image image = new Image("/images/plane-solid.png");
 
         stage.getIcons().add(image);
@@ -36,14 +36,16 @@ public class Interface extends Application {
 
     /**
      * Resgata argumentos passados por linha de comando.
-     * @param args 
+     *
+     * @param args
      */
     public static void main(String[] args) {
         launch(args);
     }
-    
+
     /**
      * Retorna o objeto da janela instanciada.
+     *
      * @return Stage
      */
     public static Stage getStage() {
@@ -52,10 +54,11 @@ public class Interface extends Application {
 
     /**
      * Altera o objeto da janela instanciada.
+     *
      * @return Stage
      */
     public static void setStage(Stage stage) {
         Interface.stage = stage;
     }
-    
+
 }

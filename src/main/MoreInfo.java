@@ -18,22 +18,23 @@ import models.Travel;
 public class MoreInfo extends Application {
 
     private static Stage stage;
-    
-    public MoreInfo(Travel travel){
+
+    public MoreInfo(Travel travel) {
         MoreInfoController.setTravel(travel);
     }
+
     @Override
     public void start(Stage stage) throws Exception {
         Parent root = FXMLLoader.load(getClass().getResource("/views/MoreInfo.fxml"));
-        
+
         Scene scene = new Scene(root);
-        
+
         stage.setScene(scene);
         stage.setTitle("Companhia Aérea - Informações do voo");
         stage.setResizable(false);
         stage.show();
         setStage(stage);
-        
+
         Image image = new Image("/images/plane-solid.png");
 
         stage.getIcons().add(image);
@@ -43,7 +44,7 @@ public class MoreInfo extends Application {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        launch(args);     
+        launch(args);
     }
 
     public static Stage getStage() {
@@ -53,5 +54,5 @@ public class MoreInfo extends Application {
     public static void setStage(Stage stage) {
         MoreInfo.stage = stage;
     }
-    
+
 }
