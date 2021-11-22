@@ -1,4 +1,3 @@
-
 package controllers;
 
 import java.io.IOException;
@@ -12,10 +11,12 @@ import java.util.List;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.concurrent.Task;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Alert;
@@ -26,6 +27,7 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import main.Interface;
 import main.MoreInfo;
@@ -39,7 +41,7 @@ import models.Travel;
  * @author João Erick Barbosa
  */
 public class InterfaceController extends StageController implements Initializable {
-    
+
     @FXML
     private TableView<Travel> table;
 
@@ -60,29 +62,35 @@ public class InterfaceController extends StageController implements Initializabl
 
     @FXML
     private ImageView btnSearchIcon;
-    
+
+    @FXML
+    private ImageView imgLoading;
+
+    @FXML
+    private Text txtRouteCalculate;
+
     private static Socket client;
-    
+
     private static List<Travel> travels = new ArrayList();
-    
+
     private Travel selected;
-    
+
     private static final String IP_ADDRESS = "localhost";
     private static final int PORT = 12240;
-    
+
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         //Preenche as cidades nos componentes de seleção.
         fillComboBox();
-        
+
         cBoxDestination.setDisable(true);
         btnSearch.setDisable(true);
-        
+
         table.getSelectionModel().selectedItemProperty().addListener(new ChangeListener() {
             @Override
             public void changed(ObservableValue observable, Object oldValue, Object newValue) {
                 selected = (Travel) newValue;
-                if(selected != null){
+                if (selected != null) {
                     MoreInfo alt = new MoreInfo(selected);
                     close(Interface.getStage());
                     try {
@@ -90,80 +98,81 @@ public class InterfaceController extends StageController implements Initializabl
                     } catch (Exception ex) {
                         Logger.getLogger(InterfaceController.class.getName()).log(Level.SEVERE, null, ex);
                     }
-                } else{
+                } else {
                     Alert alert = new Alert(Alert.AlertType.WARNING);
 
                     alert.setHeaderText("Selecione um voo!");
                     alert.show();
                 }
-                
+
             }
-        
+
         });
-        
-       btnSearch.setOnMouseClicked((MouseEvent e)->{    
-            search();
+
+        btnSearch.setOnMouseClicked((MouseEvent e) -> {
+            loadRoutes();
         });
-        
-        btnSearchIcon.setOnMouseClicked((MouseEvent e)->{          
-            search();
+
+        btnSearchIcon.setOnMouseClicked((MouseEvent e) -> {
+            loadRoutes();
         });
-        
+
         cBoxOrigin.valueProperty().addListener(new ChangeListener() {
             @Override
             public void changed(ObservableValue observable, Object oldValue, Object newValue) {
                 cBoxDestination.setDisable(false);
                 removeOption(cBoxDestination, oldValue, newValue);
             }
-        
+
         });
-        
+
         cBoxDestination.valueProperty().addListener(new ChangeListener() {
             @Override
             public void changed(ObservableValue observable, Object oldValue, Object newValue) {
                 btnSearch.setDisable(false);
                 removeOption(cBoxOrigin, oldValue, newValue);
             }
-        
+
         });
-          
-    }  
-    
+
+    }
+
     /**
      * Inicializa a tabela de voos com dados presentes na lista de voos.
      */
     private void initTable() {
         clmParts.setCellValueFactory(new PropertyValueFactory("totalParts"));
         clmRoutes.setCellValueFactory(new PropertyValueFactory("cities"));
-        
+
         table.setItems(listToObservableList());
     }
-    
+
     /**
-     * Preenche as cidades nos componentes de seleção a partir da leitura do 
+     * Preenche as cidades nos componentes de seleção a partir da leitura do
      * arquivo de cidades.
      */
-    private void fillComboBox(){
+    private void fillComboBox() {
         Reader reader = new Reader();
-        
-        for(String city: reader.readCities()){
+
+        for (String city : reader.readCities()) {
             cBoxOrigin.getItems().add(city);
             cBoxDestination.getItems().add(city);
         }
     }
-    
+
     /**
-     * Remove a opção de outro componente de seleção que foi selecionada no 
+     * Remove a opção de outro componente de seleção que foi selecionada no
      * componente de seleção especificado.
-     * 
+     *
      * @param option ComboBox<String> - Componente de seleção.
      * @param oldValue Object - Antiga opção selecionada.
      * @param newValue Object - Nova opção selecionada.
      */
-    private void removeOption(ComboBox<String> option, Object oldValue, Object newValue){
+    private void removeOption(ComboBox<String> option, Object oldValue, Object newValue) {
         option.getItems().remove((String) newValue);
-        if(oldValue != null)
+        if (oldValue != null) {
             option.getItems().add((String) oldValue);
+        }
 
         option.getItems().sort(new Comparator<String>() {
             @Override
@@ -172,7 +181,7 @@ public class InterfaceController extends StageController implements Initializabl
             }
         });
     }
-    
+
     /**
      * Inicializa a conexão cliente com o servidor através do endereço IP e
      * porta especificados.
@@ -194,7 +203,7 @@ public class InterfaceController extends StageController implements Initializabl
             }
         }
     }
-    
+
     /**
      * Converte a lista de voos de forma a ser compatível com tabela da
      * interface.
@@ -204,26 +213,32 @@ public class InterfaceController extends StageController implements Initializabl
     private ObservableList<Travel> listToObservableList() {
         return FXCollections.observableArrayList(travels);
     }
-    
+
     /**
      * Requisitas as possíveis rotas de voo aos servidores e atualiza a tabela.
      */
-    private void search(){
+    private String search() {
         requestTravels();
-        for(Travel travel : travels){
+
+        for (Travel travel : travels) {
             travel.setAttributes();
         }
+
         travels.sort(new Comparator<Travel>() {
             @Override
             public int compare(Travel travel1, Travel travel2) {
                 return new Integer(travel1.getTotalParts()).compareTo(new Integer(travel2.getTotalParts()));
             }
         });
+
         initTable();
+
+        return "Tudo certo.";
+
     }
-    
+
     /**
-     * Faz requisição ao servidor para resgatar a lista de voos partindo da 
+     * Faz requisição ao servidor para resgatar a lista de voos partindo da
      * cidade de origem e cidade de destino especificados.
      */
     private void requestTravels() {
@@ -237,7 +252,7 @@ public class InterfaceController extends StageController implements Initializabl
             ObjectOutputStream output = new ObjectOutputStream(client.getOutputStream());
             output.flush();
             output.writeObject(new String("GET /routes"));
-            
+
             ObjectOutputStream output2 = new ObjectOutputStream(client.getOutputStream());
             output2.flush();
             output2.writeObject(cBoxOrigin.getValue() + "," + cBoxDestination.getValue());
@@ -246,7 +261,7 @@ public class InterfaceController extends StageController implements Initializabl
             ObjectInputStream input = new ObjectInputStream(client.getInputStream());
 
             travels = (List<Travel>) input.readObject();
-            
+
             client.close();
         } catch (IOException ex) {
             Logger.getLogger(InterfaceController.class.getName()).log(Level.SEVERE, null, ex);
@@ -256,5 +271,42 @@ public class InterfaceController extends StageController implements Initializabl
             System.out.println(cnfe);
         }
     }
-    
+
+    /**
+     * Exibe as informações das rotas na janela.
+     */
+    private void loadRoutes() {
+        setLoadingVisibity(true);
+        table.setItems(null);
+
+        Task loadRoutes = new Task() {
+
+            @Override
+            protected String call() throws Exception {
+                return search();
+            }
+
+            @Override
+            protected void succeeded() {
+                setLoadingVisibity(false);
+            }
+        };
+
+        Thread t = new Thread(loadRoutes);
+        t.setDaemon(true);
+        t.start();
+        if (t.isAlive()) {
+            t.interrupt();
+        }
+    }
+
+    /**
+     * Muda a visibilidade dos elementos de carregamento.
+     *
+     * @param visibility boolean - Visibilidade
+     */
+    private void setLoadingVisibity(boolean visibility) {
+        imgLoading.setVisible(visibility);
+        txtRouteCalculate.setVisible(visibility);
+    }
 }
