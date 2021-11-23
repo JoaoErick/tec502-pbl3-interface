@@ -1,5 +1,6 @@
 package main;
 
+import controllers.InterfaceController;
 import javafx.application.Application;
 import static javafx.application.Application.launch;
 import javafx.fxml.FXMLLoader;
@@ -16,6 +17,12 @@ import javafx.stage.Stage;
 public class Interface extends Application {
 
     private static Stage stage;
+    
+    public Interface(String companyName) {
+        InterfaceController.setCompanyName(companyName);
+    }
+    
+    public Interface() {}
 
     @Override
     public void start(Stage stage) throws Exception {
