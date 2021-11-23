@@ -6,6 +6,7 @@ import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
 import java.util.ResourceBundle;
@@ -19,6 +20,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
+import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
@@ -29,6 +31,7 @@ import javafx.stage.Stage;
 import main.Interface;
 import main.MoreInfo;
 import models.Reader;
+import models.ServerAddress;
 import models.Travel;
 
 /**
@@ -39,6 +42,9 @@ import models.Travel;
  */
 public class InterfaceController extends StageController implements Initializable {
 
+    @FXML
+    private Label lblCompanyName;
+     
     @FXML
     private TableView<Travel> table;
 
@@ -72,14 +78,21 @@ public class InterfaceController extends StageController implements Initializabl
 
     private Travel selected;
 
-    private static final String IP_ADDRESS = "localhost";
-    private static final int PORT = 12240;
+    private static String companyName;
 
+    private final static List<ServerAddress> companyServers = Arrays.asList(
+            new ServerAddress("localhost", 12240, "Azul"),
+            new ServerAddress("localhost", 12241, "GOL"),
+            new ServerAddress("localhost", 12242, "TAM")
+    );
+    
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         //Preenche as cidades nos componentes de seleção.
         fillComboBox();
 
+        lblCompanyName.setText(lblCompanyName.getText() + " " + companyName);
+        
         cBoxDestination.setDisable(true);
         btnSearch.setDisable(true);
 
@@ -191,8 +204,20 @@ public class InterfaceController extends StageController implements Initializabl
      */
     private static void initClient() {
         try {
-            client = new Socket(IP_ADDRESS, PORT);
-            System.out.println("Conexão estabelecida!");
+            if (!companyName.equals("")) {
+                for (ServerAddress serverAddress : companyServers) {
+                    if (serverAddress.getCompanyName().equals(companyName)) {
+                        client = new Socket(
+                                serverAddress.getIpAddress(),
+                                serverAddress.getPort()
+                        );
+                        System.out.println("Conexão estabelecida!");
+                        break;
+                    }
+                }
+
+            }
+
         } catch (IOException ioe) {
             System.err.println("Erro, a conexão com o servidor não foi "
                     + "estabelecida!");
@@ -298,6 +323,14 @@ public class InterfaceController extends StageController implements Initializabl
             @Override
             protected void succeeded() {
                 setLoadingVisibity(false);
+                if (travels.size() <= 0) {
+                    Alert alert = new Alert(Alert.AlertType.WARNING);
+
+                    alert.setTitle("Atenção!");
+                    alert.setHeaderText("Não foi possível encontrar rotas entre essas"
+                            + " duas cidades.");
+                    alert.show();
+                }
             }
         };
 
@@ -318,4 +351,13 @@ public class InterfaceController extends StageController implements Initializabl
         imgLoading.setVisible(visibility);
         txtRouteCalculate.setVisible(visibility);
     }
+
+    public static String getCompanyName() {
+        return companyName;
+    }
+
+    public static void setCompanyName(String companyName) {
+        InterfaceController.companyName = companyName;
+    }
+
 }

@@ -20,7 +20,7 @@
             <Image url="@../images/plane-solid.png" />
          </image>
       </ImageView>
-      <Label layoutX="84.0" layoutY="24.0" text="Companhia Aérea" textFill="#006a99">
+      <Label fx:id="lblCompanyName" layoutX="84.0" layoutY="24.0" text="Companhia Aérea -" textFill="#006a99">
          <font>
             <Font size="24.0" />
          </font>
