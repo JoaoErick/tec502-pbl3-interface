@@ -281,10 +281,10 @@ public class InterfaceController extends StageController implements Initializabl
             output.flush();
             output.writeObject(new String("GET /routes"));
 
-            ObjectOutputStream output2
+            ObjectOutputStream outputBody
                     = new ObjectOutputStream(client.getOutputStream());
-            output2.flush();
-            output2.writeObject(
+            outputBody.flush();
+            outputBody.writeObject(
                     cBoxOrigin.getValue() + "," + cBoxDestination.getValue()
             );
 
