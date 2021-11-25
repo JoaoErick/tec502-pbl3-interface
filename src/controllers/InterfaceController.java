@@ -44,7 +44,7 @@ public class InterfaceController extends StageController implements Initializabl
 
     @FXML
     private Label lblCompanyName;
-     
+
     @FXML
     private TableView<Travel> table;
 
@@ -85,14 +85,14 @@ public class InterfaceController extends StageController implements Initializabl
             new ServerAddress("localhost", 12241, "GOL"),
             new ServerAddress("localhost", 12242, "TAM")
     );
-    
+
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         //Preenche as cidades nos componentes de seleção.
         fillComboBox();
 
         lblCompanyName.setText(lblCompanyName.getText() + " " + companyName);
-        
+
         cBoxDestination.setDisable(true);
         btnSearch.setDisable(true);
 
@@ -221,7 +221,6 @@ public class InterfaceController extends StageController implements Initializabl
         } catch (IOException ioe) {
             System.err.println("Erro, a conexão com o servidor não foi "
                     + "estabelecida!");
-            System.out.println(ioe);
 
             try {
                 client.close();
@@ -331,6 +330,17 @@ public class InterfaceController extends StageController implements Initializabl
                             + " duas cidades.");
                     alert.show();
                 }
+            }
+            
+            @Override
+            protected void failed() {
+                setLoadingVisibity(false);
+                Alert alert = new Alert(Alert.AlertType.ERROR);
+
+                alert.setTitle("Erro!");
+                alert.setHeaderText("A conexão com o servidor da companhia " + 
+                        companyName + " não foi estabelecida!");
+                alert.show();
             }
         };
 
