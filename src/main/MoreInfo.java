@@ -11,7 +11,8 @@ import javafx.stage.Stage;
 import models.Travel;
 
 /**
- *
+ * Tela de mais informações a respeito de um trajeto.
+ * 
  * @author Allan Capistrano
  * @author João Erick Barbosa
  */
@@ -47,10 +48,20 @@ public class MoreInfo extends Application {
         launch(args);
     }
 
+    /**
+     * Retorna o objeto da janela instanciada.
+     *
+     * @return Stage
+     */
     public static Stage getStage() {
         return stage;
     }
 
+    /**
+     * Altera o objeto da janela instanciada.
+     * 
+     * @param stage Stage - Nova janela.
+     */
     public static void setStage(Stage stage) {
         MoreInfo.stage = stage;
     }

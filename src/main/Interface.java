@@ -10,7 +10,8 @@ import javafx.scene.image.Image;
 import javafx.stage.Stage;
 
 /**
- *
+ * Tela de escolher a cidade de origem e destino.
+ * 
  * @author Allan Capistrano
  * @author João Erick Barbosa
  */
@@ -62,7 +63,7 @@ public class Interface extends Application {
     /**
      * Altera o objeto da janela instanciada.
      *
-     * @return Stage
+     * @param stage Stage - Nova janela.
      */
     public static void setStage(Stage stage) {
         Interface.stage = stage;

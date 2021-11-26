@@ -9,7 +9,8 @@ import javafx.scene.image.Image;
 import javafx.stage.Stage;
 
 /**
- *
+ * Tela de escolher a companhia.
+ * 
  * @author Allan Capistrano
  * @author João Erick Barbosa
  */
@@ -55,7 +56,7 @@ public class ChooseCompany extends Application {
     /**
      * Altera o objeto da janela instanciada.
      *
-     * @return Stage
+     * @param stage Stage - Nova janela.
      */
     public static void setStage(Stage stage) {
         ChooseCompany.stage = stage;
