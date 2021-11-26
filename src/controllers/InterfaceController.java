@@ -80,6 +80,8 @@ public class InterfaceController extends StageController implements Initializabl
 
     private static String companyName;
 
+    public static ServerAddress address;
+
     private final static List<ServerAddress> companyServers = Arrays.asList(
             new ServerAddress("localhost", 12240, "Azul"),
             new ServerAddress("localhost", 12241, "GOL"),
@@ -207,15 +209,16 @@ public class InterfaceController extends StageController implements Initializabl
             if (!companyName.equals("")) {
                 for (ServerAddress serverAddress : companyServers) {
                     if (serverAddress.getCompanyName().equals(companyName)) {
-                        client = new Socket(
-                                serverAddress.getIpAddress(),
-                                serverAddress.getPort()
-                        );
-                        System.out.println("Conexão estabelecida!");
+                        address = serverAddress;
                         break;
                     }
                 }
 
+                client = new Socket(
+                        address.getIpAddress(),
+                        address.getPort()
+                );
+                System.out.println("Conexão estabelecida!");
             }
 
         } catch (IOException ioe) {
@@ -331,15 +334,15 @@ public class InterfaceController extends StageController implements Initializabl
                     alert.show();
                 }
             }
-            
+
             @Override
             protected void failed() {
                 setLoadingVisibity(false);
                 Alert alert = new Alert(Alert.AlertType.ERROR);
 
                 alert.setTitle("Erro!");
-                alert.setHeaderText("A conexão com o servidor da companhia " + 
-                        companyName + " não foi estabelecida!");
+                alert.setHeaderText("A conexão com o servidor da companhia "
+                        + companyName + " não foi estabelecida!");
                 alert.show();
             }
         };

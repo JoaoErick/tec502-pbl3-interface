@@ -1,10 +1,15 @@
 package controllers;
 
+import java.io.IOException;
+import java.io.ObjectOutputStream;
+import java.net.Socket;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.ResourceBundle;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
@@ -23,6 +28,7 @@ import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 import main.Interface;
 import main.MoreInfo;
+import models.Ticket;
 import models.Edge;
 import models.Travel;
 
@@ -60,6 +66,8 @@ public class MoreInfoController extends StageController implements Initializable
 
     private static Travel travel;
 
+    private static Socket client;
+
     private List<String> comboBoxes = new ArrayList<>();
 
     /**
@@ -70,22 +78,8 @@ public class MoreInfoController extends StageController implements Initializable
         fillFields();
 
         createRoute();
-        for (int i = 0; i < anchorPane.getChildren().size(); i++) {
-            if (anchorPane.getChildren().get(i).getId() != null && anchorPane.getChildren().get(i).getId().contains("cb")) {
-                ((ComboBox) anchorPane.getChildren().get(i)).valueProperty().addListener(new ChangeListener() {
-                    @Override
-                    public void changed(ObservableValue observable, Object oldValue, Object newValue) {
-                        String id = observable.toString().substring(36, 38);
-                        comboBoxes.remove(Integer.parseInt(id));
-                        comboBoxes.add(Integer.parseInt(id), (String) newValue);
-                        travel.calculate(comboBoxes);
-                        fillFields();
 
-                    }
-                });
-            }
-
-        }
+        setComboBoxEvent();
 
         btnBack.setOnMouseClicked((MouseEvent e) -> {
             back(MoreInfo.getStage(), new Interface());
@@ -105,6 +99,14 @@ public class MoreInfoController extends StageController implements Initializable
             if (e.getCode() == KeyCode.ENTER) {
                 back(MoreInfo.getStage(), new Interface());
             }
+        });
+
+        btnBuy.setOnKeyPressed((KeyEvent e) -> {
+            this.buy();
+        });
+
+        btnBuy.setOnMouseClicked((MouseEvent e) -> {
+            this.buy();
         });
     }
 
@@ -153,6 +155,71 @@ public class MoreInfoController extends StageController implements Initializable
             comboBoxes.add((String) combo_box.getValue());
 
             anchorPane.getChildren().addAll(lblPart, combo_box);
+        }
+    }
+
+    private void buy() {
+        Ticket ticket = new Ticket();
+
+        /* Adicionando os trechos da viagem na passagem. */
+        for (int i = 0; i < travel.getRoute().size(); i++) {
+            ticket.getListRoutes().add(travel.getRoute().get(i).get(0));
+        }
+
+        /* Adicionando os nomes das companhias na passagem. */
+        ticket.getListCompanyNames().addAll(comboBoxes);
+
+        try {
+            client = new Socket(
+                    InterfaceController.address.getIpAddress(),
+                    InterfaceController.address.getPort()
+            );
+
+            ObjectOutputStream output
+                    = new ObjectOutputStream(client.getOutputStream());
+
+            output.flush();
+            output.writeObject("POST /buy");
+            output.flush();
+
+            ObjectOutputStream outputBody
+                    = new ObjectOutputStream(client.getOutputStream());
+
+            outputBody.flush();
+            outputBody.writeObject(ticket);
+            outputBody.flush();
+
+            output.close();
+            outputBody.close();
+            client.close();
+        } catch (IOException ioe) {
+            System.err.println("Erro ao tentar comprar a passagem!");
+            System.out.println(ioe);
+            try {
+                client.close();
+            } catch (IOException ioex) {
+                System.err.println("Não foi possível encerrar a conexão com o "
+                        + "servidor de maneira segura.");
+                System.out.println(ioex);
+            }
+        }
+    }
+
+    private void setComboBoxEvent() {
+        for (int i = 0; i < anchorPane.getChildren().size(); i++) {
+            if (anchorPane.getChildren().get(i).getId() != null
+                    && anchorPane.getChildren().get(i).getId().contains("cb")) {
+                ((ComboBox) anchorPane.getChildren().get(i)).valueProperty().addListener(new ChangeListener() {
+                    @Override
+                    public void changed(ObservableValue observable, Object oldValue, Object newValue) {
+                        String id = observable.toString().substring(36, 38);
+                        comboBoxes.remove(Integer.parseInt(id));
+                        comboBoxes.add(Integer.parseInt(id), (String) newValue);
+                        travel.calculate(comboBoxes);
+                        fillFields();
+                    }
+                });
+            }
         }
     }
 
