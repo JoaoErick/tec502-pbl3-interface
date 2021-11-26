@@ -26,6 +26,7 @@ public class ChooseCompanyController extends StageController implements Initiali
 
     @FXML
     private Button btnAzul;
+
     /**
      * Initializes the controller class.
      */
@@ -42,6 +43,7 @@ public class ChooseCompanyController extends StageController implements Initiali
                 System.out.println(ex);
             }
         });
+
         btnGOL.setOnMouseClicked((MouseEvent e) -> {
             Interface inter = new Interface("GOL");
             close(ChooseCompany.getStage());
@@ -49,10 +51,11 @@ public class ChooseCompanyController extends StageController implements Initiali
                 inter.start(new Stage());
             } catch (Exception ex) {
                 System.err.println("Não foi possível exibir mais acessar a "
-                        + "interface da companhia Gol.");
+                        + "interface da companhia GOL.");
                 System.out.println(ex);
             }
         });
+
         btnTAM.setOnMouseClicked((MouseEvent e) -> {
             Interface inter = new Interface("TAM");
             close(ChooseCompany.getStage());
@@ -60,11 +63,9 @@ public class ChooseCompanyController extends StageController implements Initiali
                 inter.start(new Stage());
             } catch (Exception ex) {
                 System.err.println("Não foi possível exibir mais acessar a "
-                        + "interface da companhia Tam.");
+                        + "interface da companhia TAM.");
                 System.out.println(ex);
             }
         });
-        
-    }    
-    
+    }
 }
