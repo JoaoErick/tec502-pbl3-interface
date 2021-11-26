@@ -14,7 +14,7 @@ public class Ticket implements Serializable {
 
     private List<Edge> listRoutes;
     private List<String> listCompanyNames;
-
+    
     /**
      * Método construtor.
      *
