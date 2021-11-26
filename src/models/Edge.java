@@ -17,7 +17,7 @@ public class Edge implements Serializable{
     private double timeTravel;
     private String companyName;
     private float companyTariff;
-    private int amountSeat;
+    private volatile int amountSeat;
 
     /**
      * Método construtor.
@@ -100,7 +100,7 @@ public class Edge implements Serializable{
         return amountSeat;
     }
 
-    public void setAmountSeat(int amountSeat) {
+    public synchronized void setAmountSeat(int amountSeat) {
         this.amountSeat = amountSeat;
     }
 }
