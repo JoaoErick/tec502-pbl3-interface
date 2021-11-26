@@ -1,6 +1,7 @@
 package controllers;
 
 import java.io.IOException;
+import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.net.URL;
@@ -159,21 +160,21 @@ public class MoreInfoController extends StageController implements Initializable
     }
 
     private void buy() {
-        Ticket ticket = new Ticket();
-
-        /* Adicionando os trechos da viagem na passagem. */
-        for (int i = 0; i < travel.getRoute().size(); i++) {
-            ticket.getListRoutes().add(travel.getRoute().get(i).get(0));
-        }
-
-        /* Adicionando os nomes das companhias na passagem. */
-        ticket.getListCompanyNames().addAll(comboBoxes);
-
         try {
             client = new Socket(
                     InterfaceController.address.getIpAddress(),
                     InterfaceController.address.getPort()
             );
+
+            Ticket ticket = new Ticket();
+
+            /* Adicionando os trechos da viagem na passagem. */
+            for (int i = 0; i < travel.getRoute().size(); i++) {
+                ticket.getListRoutes().add(travel.getRoute().get(i).get(0));
+            }
+
+            /* Adicionando os nomes das companhias na passagem. */
+            ticket.getListCompanyNames().addAll(comboBoxes);
 
             ObjectOutputStream output
                     = new ObjectOutputStream(client.getOutputStream());
@@ -188,6 +189,12 @@ public class MoreInfoController extends StageController implements Initializable
             outputBody.flush();
             outputBody.writeObject(ticket);
             outputBody.flush();
+            
+            ObjectInputStream input = new ObjectInputStream(client.getInputStream());
+
+            String message = (String) input.readObject();
+
+            System.out.println(message);
 
             output.close();
             outputBody.close();
@@ -202,6 +209,9 @@ public class MoreInfoController extends StageController implements Initializable
                         + "servidor de maneira segura.");
                 System.out.println(ioex);
             }
+        } catch (ClassNotFoundException cnfe) {
+            System.err.println("Classe String não foi encontrada.");
+            System.out.println(cnfe);
         }
     }
 
