@@ -9,8 +9,6 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.ResourceBundle;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
@@ -165,6 +163,8 @@ public class MoreInfoController extends StageController implements Initializable
                     InterfaceController.address.getIpAddress(),
                     InterfaceController.address.getPort()
             );
+            
+            System.out.println("Conexão estabelecida!");
 
             Ticket ticket = new Ticket();
 
@@ -172,7 +172,7 @@ public class MoreInfoController extends StageController implements Initializable
             for (int i = 0; i < travel.getRoute().size(); i++) {
                 ticket.getListRoutes().add(travel.getRoute().get(i).get(0));
             }
-
+            
             /* Adicionando os nomes das companhias na passagem. */
             ticket.getListCompanyNames().addAll(comboBoxes);
 
@@ -190,29 +190,30 @@ public class MoreInfoController extends StageController implements Initializable
             outputBody.writeObject(ticket);
             outputBody.flush();
             
-            ObjectInputStream input = new ObjectInputStream(client.getInputStream());
-
-            String message = (String) input.readObject();
-
-            System.out.println(message);
+//            ObjectInputStream input = new ObjectInputStream(client.getInputStream());
+//
+//            String message = (String) input.readObject();
+//
+//            System.out.println(message);
 
             output.close();
             outputBody.close();
-            client.close();
+//            client.close();
         } catch (IOException ioe) {
             System.err.println("Erro ao tentar comprar a passagem!");
             System.out.println(ioe);
-            try {
-                client.close();
-            } catch (IOException ioex) {
-                System.err.println("Não foi possível encerrar a conexão com o "
-                        + "servidor de maneira segura.");
-                System.out.println(ioex);
-            }
-        } catch (ClassNotFoundException cnfe) {
-            System.err.println("Classe String não foi encontrada.");
-            System.out.println(cnfe);
+//            try {
+//                client.close();
+//            } catch (IOException ioex) {
+//                System.err.println("Não foi possível encerrar a conexão com o "
+//                        + "servidor de maneira segura.");
+//                System.out.println(ioex);
+//            }
         }
+//        } catch (ClassNotFoundException cnfe) {
+//            System.err.println("Classe String não foi encontrada.");
+//            System.out.println(cnfe);
+//        }
     }
 
     private void setComboBoxEvent() {
