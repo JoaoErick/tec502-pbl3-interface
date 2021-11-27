@@ -10,7 +10,7 @@ import utils.RandomUtil;
  * @author Allan Capistrano
  * @author João Erick Barbosa
  */
-public class Edge implements Serializable{
+public class Edge implements Serializable {
 
     private Vertex firstCity;
     private Vertex secondCity;
@@ -39,6 +39,7 @@ public class Edge implements Serializable{
         this.secondCity = secondCity;
         this.timeTravel = timeTravel;
         this.companyName = companyName;
+        this.amountSeat = amountSeat;
 
         this.companyTariff
                 = RandomUtil.generateFloat((float) 5.05, (float) 10.21);
