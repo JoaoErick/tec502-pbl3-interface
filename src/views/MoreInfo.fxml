@@ -10,7 +10,7 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane id="AnchorPane" fx:id="anchorPane" prefHeight="600.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.MoreInfoController">
+<AnchorPane id="AnchorPane" fx:id="anchorPane" prefHeight="600.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/15.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.MoreInfoController">
    <children>
       <Button fx:id="btnBack" layoutX="32.0" layoutY="104.0" mnemonicParsing="false" prefHeight="27.0" prefWidth="95.0" style="-fx-background-color: #00a8f3; -fx-background-radius: 8;" textFill="WHITE">
          <font>
@@ -85,5 +85,10 @@
             <Cursor fx:constant="HAND" />
          </cursor>
       </Button>
+      <ImageView fx:id="imgLoading" fitHeight="30.0" fitWidth="26.0" layoutX="437.0" layoutY="547.0" pickOnBounds="true" preserveRatio="true" visible="false">
+         <image>
+            <Image url="@../images/loading.gif" />
+         </image>
+      </ImageView>
    </children>
 </AnchorPane>
