@@ -263,7 +263,7 @@ public class InterfaceController extends StageController implements Initializabl
 
         initTable();
 
-        return "Tabela montada com sucesso.";
+        return "";
     }
 
     /**
