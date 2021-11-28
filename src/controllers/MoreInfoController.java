@@ -109,12 +109,20 @@ public class MoreInfoController extends StageController implements Initializable
         });
     }
 
+    /**
+     * Preenche os campos da quantidade de escalas, preço total e tempo total 
+     * de voo.
+     */
     private void fillFields() {
         lblParts.setText((travel.getTotalParts() != 0 ? String.valueOf(travel.getTotalParts()) : "Sem escala"));
         lblTimeTravel.setText(String.format("%.2f", travel.getTotalTime()) + " Horas");
         lblTotalPrice.setText("R$ " + String.format("%.2f", travel.getTotalPrice()));
     }
 
+    /**
+     * Preenche o campo de trajeto com os trechos do voo e as caixa de seleção 
+     * com as companhias que operam em cada trecho. 
+     */
     private void createRoute() {
         LinkedList<List<Edge>> route = new LinkedList<>();
 
@@ -157,6 +165,9 @@ public class MoreInfoController extends StageController implements Initializable
         }
     }
 
+    /**
+     * Realiza a requisição de compra para o servidor da companhia da interface.
+     */
     private void buy() {
         try {
             client = new Socket(
@@ -216,6 +227,10 @@ public class MoreInfoController extends StageController implements Initializable
 //        }
     }
 
+    /**
+     * Recalcula o preço total e o tempo total de viagem a depender das 
+     * companhias escolhidas para cada trecho.
+     */
     private void setComboBoxEvent() {
         for (int i = 0; i < anchorPane.getChildren().size(); i++) {
             if (anchorPane.getChildren().get(i).getId() != null

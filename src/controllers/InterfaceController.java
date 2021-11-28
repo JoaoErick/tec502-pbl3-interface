@@ -97,7 +97,7 @@ public class InterfaceController extends StageController implements Initializabl
 
         cBoxDestination.setDisable(true);
         btnSearch.setDisable(true);
-
+        
         table.getSelectionModel().selectedItemProperty().addListener(new ChangeListener() {
             @Override
             public void changed(ObservableValue observable, Object oldValue, Object newValue) {
