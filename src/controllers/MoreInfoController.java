@@ -201,30 +201,29 @@ public class MoreInfoController extends StageController implements Initializable
             outputBody.writeObject(ticket);
             outputBody.flush();
             
-//            ObjectInputStream input = new ObjectInputStream(client.getInputStream());
-//
-//            String message = (String) input.readObject();
-//
-//            System.out.println(message);
+            ObjectInputStream input = new ObjectInputStream(client.getInputStream());
+
+            String message = (String) input.readObject();
+
+            System.out.println(message);
 
             output.close();
             outputBody.close();
-//            client.close();
+            client.close();
         } catch (IOException ioe) {
             System.err.println("Erro ao tentar comprar a passagem!");
             System.out.println(ioe);
-//            try {
-//                client.close();
-//            } catch (IOException ioex) {
-//                System.err.println("Não foi possível encerrar a conexão com o "
-//                        + "servidor de maneira segura.");
-//                System.out.println(ioex);
-//            }
+            try {
+                client.close();
+            } catch (IOException ioex) {
+                System.err.println("Não foi possível encerrar a conexão com o "
+                        + "servidor de maneira segura.");
+                System.out.println(ioex);
+            }
+        } catch (ClassNotFoundException cnfe) {
+            System.err.println("Classe String não foi encontrada.");
+            System.out.println(cnfe);
         }
-//        } catch (ClassNotFoundException cnfe) {
-//            System.err.println("Classe String não foi encontrada.");
-//            System.out.println(cnfe);
-//        }
     }
 
     /**
