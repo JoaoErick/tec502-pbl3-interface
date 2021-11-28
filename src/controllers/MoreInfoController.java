@@ -9,11 +9,14 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.ResourceBundle;
+import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
+import javafx.concurrent.Task;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
@@ -63,11 +66,16 @@ public class MoreInfoController extends StageController implements Initializable
     @FXML
     private Text txtRouteTitle;
 
+    @FXML
+    private ImageView imgLoading;
+
     private static Travel travel;
 
     private static Socket client;
 
     private List<String> comboBoxes = new ArrayList<>();
+
+    private boolean purchaseStatus;
 
     /**
      * Initializes the controller class.
@@ -101,17 +109,17 @@ public class MoreInfoController extends StageController implements Initializable
         });
 
         btnBuy.setOnKeyPressed((KeyEvent e) -> {
-            this.buy();
+            this.waitPurchase();
         });
 
         btnBuy.setOnMouseClicked((MouseEvent e) -> {
-            this.buy();
+            this.waitPurchase();
         });
     }
 
     /**
-     * Preenche os campos da quantidade de escalas, preço total e tempo total 
-     * de voo.
+     * Preenche os campos da quantidade de escalas, preço total e tempo total de
+     * voo.
      */
     private void fillFields() {
         lblParts.setText((travel.getTotalParts() != 0 ? String.valueOf(travel.getTotalParts()) : "Sem escala"));
@@ -120,8 +128,8 @@ public class MoreInfoController extends StageController implements Initializable
     }
 
     /**
-     * Preenche o campo de trajeto com os trechos do voo e as caixa de seleção 
-     * com as companhias que operam em cada trecho. 
+     * Preenche o campo de trajeto com os trechos do voo e as caixa de seleção
+     * com as companhias que operam em cada trecho.
      */
     private void createRoute() {
         LinkedList<List<Edge>> route = new LinkedList<>();
@@ -168,13 +176,13 @@ public class MoreInfoController extends StageController implements Initializable
     /**
      * Realiza a requisição de compra para o servidor da companhia da interface.
      */
-    private void buy() {
+    private String buy() {
         try {
             client = new Socket(
                     InterfaceController.address.getIpAddress(),
                     InterfaceController.address.getPort()
             );
-            
+
             System.out.println("Conexão estabelecida!");
 
             Ticket ticket = new Ticket();
@@ -183,7 +191,7 @@ public class MoreInfoController extends StageController implements Initializable
             for (int i = 0; i < travel.getRoute().size(); i++) {
                 ticket.getListRoutes().add(travel.getRoute().get(i).get(0));
             }
-            
+
             /* Adicionando os nomes das companhias na passagem. */
             ticket.getListCompanyNames().addAll(comboBoxes);
 
@@ -200,12 +208,10 @@ public class MoreInfoController extends StageController implements Initializable
             outputBody.flush();
             outputBody.writeObject(ticket);
             outputBody.flush();
-            
+
             ObjectInputStream input = new ObjectInputStream(client.getInputStream());
 
-            String message = (String) input.readObject();
-
-            System.out.println(message);
+            purchaseStatus = (boolean) input.readObject();
 
             output.close();
             outputBody.close();
@@ -221,13 +227,15 @@ public class MoreInfoController extends StageController implements Initializable
                 System.out.println(ioex);
             }
         } catch (ClassNotFoundException cnfe) {
-            System.err.println("Classe String não foi encontrada.");
+            System.err.println("O tipo boolean não foi encontrado.");
             System.out.println(cnfe);
         }
+
+        return "";
     }
 
     /**
-     * Recalcula o preço total e o tempo total de viagem a depender das 
+     * Recalcula o preço total e o tempo total de viagem a depender das
      * companhias escolhidas para cada trecho.
      */
     private void setComboBoxEvent() {
@@ -246,6 +254,76 @@ public class MoreInfoController extends StageController implements Initializable
                 });
             }
         }
+    }
+
+    /**
+     * Espera ser realziada a compra da passagem, e toma uma ação a depender da 
+     * resposata do servidor.
+     */
+    private void waitPurchase() {
+        Task loadRoutes = new Task() {
+
+            @Override
+            protected String call() throws Exception {
+                handleButtons(true);
+
+                Platform.runLater(() -> {
+                    btnBuy.setText("");
+                });
+
+                return buy();
+            }
+
+            @Override
+            protected void succeeded() {
+                Alert alert;
+
+                handleButtons(false);
+
+                Platform.runLater(() -> {
+                    btnBuy.setText("Comprar");
+                });
+
+                if (purchaseStatus) { /* Caso a compra seja efetuada. */
+                    alert = new Alert(Alert.AlertType.CONFIRMATION);
+
+                    alert.setTitle("Sucesso");
+                    alert.setHeaderText("Compra da passagem realizada com "
+                            + "sucesso!");
+
+                } else { /* Caso a compra não seja efetuada. */
+                    alert = new Alert(Alert.AlertType.ERROR);
+
+                    alert.setTitle("Ops");
+                    alert.setHeaderText("Não foi possível realizar a compra da "
+                            + "passagem!");
+                }
+
+                alert.show();
+            }
+        };
+
+        Thread t = new Thread(loadRoutes);
+        
+        t.setDaemon(true);
+        t.start();
+        
+        if (t.isAlive()) {
+            t.interrupt();
+        }
+    }
+
+    /**
+     * Lida com os botões da interface.
+     *
+     * @param status boolean - Estado do botão.
+     */
+    private synchronized void handleButtons(boolean status) {
+        btnArrowBack.setDisable(status);
+        btnBack.setDisable(status);
+        btnBuy.setDisable(status);
+
+        imgLoading.setVisible(status);
     }
 
     public static Travel getTravel() {
