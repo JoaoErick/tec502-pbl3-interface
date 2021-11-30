@@ -27,9 +27,6 @@ public class ChooseCompanyController extends StageController implements Initiali
     @FXML
     private Button btnAzul;
 
-    /**
-     * Initializes the controller class.
-     */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         btnAzul.setOnMouseClicked((MouseEvent e) -> {

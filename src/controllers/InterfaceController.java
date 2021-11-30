@@ -175,8 +175,7 @@ public class InterfaceController extends StageController implements Initializabl
     }
 
     /**
-     * Remove a opção de outro componente de seleção que foi selecionada no
-     * componente de seleção especificado.
+     * Remove de uma ComboBox a opção selecionada em outra ComboBox.
      *
      * @param option ComboBox<String> - Componente de seleção.
      * @param oldValue Object - Antiga opção selecionada.
@@ -245,7 +244,7 @@ public class InterfaceController extends StageController implements Initializabl
     }
 
     /**
-     * Requisitas as possíveis rotas de voo aos servidores e atualiza a tabela.
+     * Requisita as possíveis rotas de voo aos servidores e atualiza a tabela.
      */
     private String search() {
         requestTravels();

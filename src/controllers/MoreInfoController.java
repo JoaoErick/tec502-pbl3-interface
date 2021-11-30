@@ -77,9 +77,6 @@ public class MoreInfoController extends StageController implements Initializable
 
     private boolean purchaseStatus;
 
-    /**
-     * Initializes the controller class.
-     */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         fillFields();
@@ -257,8 +254,8 @@ public class MoreInfoController extends StageController implements Initializable
     }
 
     /**
-     * Espera ser realziada a compra da passagem, e toma uma ação a depender da 
-     * resposata do servidor.
+     * Espera ser realizada a compra da passagem, e toma uma ação a depender da 
+     * resposta do servidor.
      */
     private void waitPurchase() {
         Task loadRoutes = new Task() {

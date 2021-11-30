@@ -20,6 +20,11 @@ public class MoreInfo extends Application {
 
     private static Stage stage;
 
+    /**
+     * Método construtor.
+     * 
+     * @param travel Travel - Viagem escolhida.
+     */
     public MoreInfo(Travel travel) {
         MoreInfoController.setTravel(travel);
     }

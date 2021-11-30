@@ -19,6 +19,11 @@ public class Interface extends Application {
 
     private static Stage stage;
     
+    /**
+     * Método construtor.
+     * 
+     * @param companyName String - Nome da companhia.
+     */
     public Interface(String companyName) {
         InterfaceController.setCompanyName(companyName);
     }
