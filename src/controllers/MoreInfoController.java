@@ -254,7 +254,7 @@ public class MoreInfoController extends StageController implements Initializable
     }
 
     /**
-     * Espera ser realizada a compra da passagem, e toma uma ação a depender da 
+     * Espera ser realizada a compra da passagem, e toma uma ação a depender da
      * resposta do servidor.
      */
     private void waitPurchase() {
@@ -281,14 +281,16 @@ public class MoreInfoController extends StageController implements Initializable
                     btnBuy.setText("Comprar");
                 });
 
-                if (purchaseStatus) { /* Caso a compra seja efetuada. */
+                if (purchaseStatus) {
+                    /* Caso a compra seja efetuada. */
                     alert = new Alert(Alert.AlertType.CONFIRMATION);
 
                     alert.setTitle("Sucesso");
                     alert.setHeaderText("Compra da passagem realizada com "
                             + "sucesso!");
 
-                } else { /* Caso a compra não seja efetuada. */
+                } else {
+                    /* Caso a compra não seja efetuada. */
                     alert = new Alert(Alert.AlertType.ERROR);
 
                     alert.setTitle("Ops");
@@ -296,15 +298,32 @@ public class MoreInfoController extends StageController implements Initializable
                             + "passagem!");
                 }
 
+                purchaseStatus = false;
+
+                alert.show();
+            }
+
+            @Override
+            protected void failed() {
+                handleButtons(false);
+
+                Platform.runLater(() -> {
+                    btnBuy.setText("Comprar");
+                });
+                Alert alert = new Alert(Alert.AlertType.ERROR);
+
+                alert.setTitle("Erro!");
+                alert.setHeaderText("A conexão com o servidor da companhia"
+                        + " não foi estabelecida!");
                 alert.show();
             }
         };
 
         Thread t = new Thread(loadRoutes);
-        
+
         t.setDaemon(true);
         t.start();
-        
+
         if (t.isAlive()) {
             t.interrupt();
         }

@@ -333,7 +333,7 @@ public class InterfaceController extends StageController implements Initializabl
                     alert.show();
                 }
             }
-
+            
             @Override
             protected void failed() {
                 setLoadingVisibity(false);
