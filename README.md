@@ -29,8 +29,8 @@ O projeto trata-se do *client* que se conecta ao [servidor](https://github.com/A
 2. Após instalado, basta executar o projeto na sua IDE de escolha.
 
 ### Através de arquivos já gerados ###
-1. Caso esteja utilizando o sistema operacional **Windows**, [clique aqui]() e faça o download do arquivo `.exe` ou `.jar`;
-2. Porém, caso esteja utilizando o sistema operacional **macOS** ou alguma distribuição **Linux**, [clique aqui]() e faça o download do arquivo `.jar`;
+1. Caso esteja utilizando o sistema operacional **Windows**, [clique aqui](https://github.com/JoaoErick/tec502-pbl3-interface/releases/tag/v1.0.1) e faça o download do arquivo `.exe` ou `.jar`;
+2. Porém, caso esteja utilizando o sistema operacional **macOS** ou alguma distribuição **Linux**, [clique aqui](https://github.com/JoaoErick/tec502-pbl3-interface/releases/tag/v1.0.1) e faça o download do arquivo `.jar`;
 3. Após isso, com o [servidor](https://github.com/AllanCapistrano/tec502-pbl3-server) *online*, basta instalar o programa através do arquivo `.exe` ou executar o arquivo `.jar`.
 
 ###### Obs1: Utilizando o arquivo `.exe` não é necessário ter o JDK 8u111 instalado. ######
