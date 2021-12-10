@@ -4,8 +4,6 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
-import java.nio.file.FileSystems;
-import java.nio.file.Path;
 import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
@@ -29,8 +27,7 @@ public class Reader {
      */
     public Reader(){
         try {
-            Path path = FileSystems.getDefault().getPath("src", "files", FILE_NAME);
-            this.file = new File(path.toString());
+            this.file = new File(FILE_NAME);
             file.createNewFile();
         } catch (IOException ioe) {
             System.err.println("Erro ao tentar criar o objeto \"file\".");
