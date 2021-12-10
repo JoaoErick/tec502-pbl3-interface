@@ -29,9 +29,21 @@ O projeto trata-se do *client* que se conecta ao [servidor](https://github.com/A
 2. Após instalado, basta executar o projeto na sua IDE de escolha.
 
 ### Através de arquivos já gerados ###
-1. Caso esteja utilizando o sistema operacional **Windows**, [clique aqui](https://github.com/JoaoErick/tec502-pbl3-interface/releases/tag/v1.0.1) e faça o download do arquivo `.exe` ou `.jar`;
+1. Caso esteja utilizando o sistema operacional **Windows**, [clique aqui](https://github.com/JoaoErick/tec502-pbl3-interface/releases/tag/v1.0.1) e faça o download do arquivo `.jar` ou `.exe`;
 2. Porém, caso esteja utilizando o sistema operacional **macOS** ou alguma distribuição **Linux**, [clique aqui](https://github.com/JoaoErick/tec502-pbl3-interface/releases/tag/v1.0.1) e faça o download do arquivo `.jar`;
 3. Após isso, com o [servidor](https://github.com/AllanCapistrano/tec502-pbl3-server) *online*, basta instalar o programa através do arquivo `.exe` ou executar o arquivo `.jar`.
+
+**JAR:**
+1. Baixe o arquivo [`cities.txt`](https://raw.githubusercontent.com/JoaoErick/tec502-pbl3-interface/main/cities.txt?token=AKPP7PTCRFZJEMXCQT655TTBXTKHW);
+2. Execute o arquivo `.jar` no mesmo diretório que está o arquivo `cities.txt`.
+
+**EXE:**
+1. Baixe o arquivo [`cities.txt`](https://raw.githubusercontent.com/JoaoErick/tec502-pbl3-interface/main/cities.txt?token=AKPP7PTCRFZJEMXCQT655TTBXTKHW);
+2. Aperte `Tecla do Windows` + `R`;
+3. Digite `%appdata%`;
+4. Volte para o diretório `AppData`;
+5. A partir disso, acesse `Local` ➞ `Companhia Aerea` ➞ `app`, e cole o arquivo `cities.txt`;
+6. Após isso, basta inciar o programa.
 
 ###### Obs1: Utilizando o arquivo `.exe` não é necessário ter o JDK 8u111 instalado. ######
 ###### Obs2: Para executar o arquivo `.jar` é necessário ter o JDK 8u111 instalado. ######
