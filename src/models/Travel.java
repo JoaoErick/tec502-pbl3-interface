@@ -64,7 +64,6 @@ public class Travel implements Serializable {
         for (int j = 0; j < this.route.size(); j++) {
             this.totalTime += this.route.get(j).get(0).getTimeTravel();
             this.totalCompanyTariff += this.route.get(j).get(0).getCompanyTariff();
-            System.out.println("[" + j + "]" + totalCompanyTariff);
         }
 
         this.totalPrice = (float) (BASE_VALUE / this.totalTime) + this.totalCompanyTariff;
